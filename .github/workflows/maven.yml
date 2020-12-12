@@ -16,7 +16,6 @@ jobs:
         sed -i -E -e 's/^\s*port\s*=\s*[0-9]*/port = 15432/' "$PGDATA/postgresql.conf"
         sc config postgresql-x64-13 start=auto
         net start postgresql-x64-13
-        "$PGBIN/psql" -p 15432 -c "SELECT 1"
         "$PGBIN/psql" -p 15432 -c "ALTER ROLE postgres PASSWORD 'postgres'"
     - uses: actions/checkout@v2
     - name: Set up Java 11
