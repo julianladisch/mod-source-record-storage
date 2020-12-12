@@ -19,6 +19,8 @@ jobs:
         java-version: 11
     - name: Test PostgreSQL
       run: |
+          echo "x y z"
+          echo "a\nb\nc"
           dir env:
           echo "PGDATA=$PGDATA"
           echo "PGDATABASE=$PGDATABASE"
