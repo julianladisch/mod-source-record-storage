@@ -23,7 +23,7 @@ jobs:
           echo "PGDATA=$PGDATA"
           echo "PGBIN=$PGBIN"
           echo "PGUSER=$PGUSER"
-          $PGBIN/psql -c "SELECT 1"
+          "$PGBIN/psql" -c "SELECT 1"
           fail
     - name: Build with Maven
       run: mvn -B clean install -DskipTests --file pom.xml
