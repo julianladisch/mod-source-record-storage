@@ -16,6 +16,6 @@ jobs:
       with:
         java-version: 11
     - name: Start PostgreSQL
-      run: net start postgresql-x64-13
+      run: sc config postgresql-x64-13 start=auto
     - name: Build with Maven
       run: mvn -B clean install -DskipTests --file pom.xml
