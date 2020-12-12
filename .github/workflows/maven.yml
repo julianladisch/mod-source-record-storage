@@ -21,13 +21,12 @@ jobs:
       shell: bash
       run: |
           echo "PGDATA=$PGDATA"
-          echo "PGDATABASE=$PGDATABASE"
-          echo "PGPORT=$PGPORT"
+          echo "PGBIN=$PGBIN"
           echo "PGUSER=$PGUSER"
-          ls "$PGDATA"
-          ls "$PGDATA/psql*"
-          ls "$PGDATA/bin/psql*"
-          "$PGDATA/psql" -c "SELECT 1"
+          ls "$PGBIN"
+          ls "$PGBIN/psql*"
+          ls "$PGBIN/bin/psql*"
+          "$PGBIN/psql" -c "SELECT 1"
           fail
     - name: Build with Maven
       run: mvn -B clean install -DskipTests --file pom.xml
