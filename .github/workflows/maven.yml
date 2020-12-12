@@ -11,6 +11,7 @@ jobs:
 
     steps:
     - name: pg config
+      shell: bash
       run: cat "$PGDATA/postgresql.conf"
     - name: fail
       run: fail
