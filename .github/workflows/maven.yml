@@ -19,7 +19,8 @@ jobs:
         java-version: 11
     - name: Test PostgreSQL
       run: |
-          psql -c "SELECT 1"
+          set
+          $PGDATA\psql -c "SELECT 1"
           echo "PGDATA=$PGDATA"
           echo "PGDATABASE=$PGDATABASE"
           echo "PGPORT=$PGPORT"
