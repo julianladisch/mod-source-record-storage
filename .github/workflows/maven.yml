@@ -20,7 +20,6 @@ jobs:
     - name: Test PostgreSQL
       run: |
           set
-          $PGDATA\psql -c "SELECT 1"
           echo "PGDATA=$PGDATA"
           echo "PGDATABASE=$PGDATABASE"
           echo "PGPORT=$PGPORT"
