@@ -19,10 +19,11 @@ jobs:
         java-version: 11
     - name: Test PostgreSQL
       run: |
-          set
+          dir env:
           echo "PGDATA=$PGDATA"
           echo "PGDATABASE=$PGDATABASE"
           echo "PGPORT=$PGPORT"
           echo "PGUSER=$PGUSER"
+          "C:\Program Files\PostgreSQL\13\bin\psql" -c "SELECT 1"
     - name: Build with Maven
       run: mvn -B clean install -DskipTests --file pom.xml
