@@ -24,6 +24,9 @@ jobs:
           echo "PGDATABASE=$PGDATABASE"
           echo "PGPORT=$PGPORT"
           echo "PGUSER=$PGUSER"
+          ls "$PGDATA"
+          ls "$PGDATA/psql*"
+          ls "$PGDATA/bin/psql*"
           "$PGDATA/psql" -c "SELECT 1"
           fail
     - name: Build with Maven
