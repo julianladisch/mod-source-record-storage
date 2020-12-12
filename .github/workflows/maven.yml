@@ -18,14 +18,16 @@ jobs:
       with:
         java-version: 11
     - name: Test PostgreSQL
+      shell: bash
       run: |
           echo "x y z"
           echo "a\\nb\\nc"
+          echo "a\nb\nc"
           echo "PGDATA=$PGDATA"
           echo "PGDATABASE=\$PGDATABASE"
           echo "PGPORT=%PGPORT%"
           echo "PGUSER=$PGUSER"
-          dir env:
+          $PGDATA/psql -c "SELECT 1"
           fail
     - name: Build with Maven
       run: mvn -B clean install -DskipTests --file pom.xml
