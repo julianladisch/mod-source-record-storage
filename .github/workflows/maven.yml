@@ -9,6 +9,8 @@ jobs:
   build:
 
     runs-on: windows-latest
+      container:
+        options: --user 1001
 
     steps:
     - uses: actions/checkout@v2
