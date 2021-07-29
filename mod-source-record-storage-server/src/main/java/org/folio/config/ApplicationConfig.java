@@ -47,7 +47,7 @@ public class ApplicationConfig {
       .replicationFactor(replicationFactor)
       .maxRequestSize(maxRequestSize)
       .build();
-    LOGGER.debug("kafkaConfig: {}", kafkaConfig);
+    LOGGER.info("kafkaConfig: {}", kafkaConfig);
 
     return kafkaConfig;
   }
