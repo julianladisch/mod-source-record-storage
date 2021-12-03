@@ -50,7 +50,7 @@ public class PostgresClientFactory {
 
   private static final String DEFAULT_SCHEMA_PROPERTY = "search_path";
 
-  private static final int POOL_SIZE = 5;
+  private static final int POOL_SIZE = 15;
 
   private static final Map<String, PgPool> POOL_CACHE = new HashMap<>();
 
