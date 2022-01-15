@@ -7,6 +7,7 @@ import io.vertx.core.CompositeFuture;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
+import java.util.concurrent.TimeUnit;
 import org.folio.TestMocks;
 import org.folio.dao.RecordDao;
 import org.folio.dao.RecordDaoImpl;
@@ -36,7 +37,6 @@ import org.jooq.SortOrder;
 import org.jooq.impl.DSL;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -430,9 +430,9 @@ public class RecordServiceTest extends AbstractLBServiceTest {
   }
 
   @Test
-  @Ignore
-  public void shouldStreamEdifactSourceRecords(TestContext context) {
+  public void shouldStreamEdifactSourceRecords(TestContext context) throws InterruptedException {
     streamMarcSourceRecords(context, RecordType.EDIFACT, Record.RecordType.EDIFACT);
+    TimeUnit.SECONDS.sleep(10);
   }
 
   @Test
@@ -528,9 +528,9 @@ public class RecordServiceTest extends AbstractLBServiceTest {
   }
 
   @Test
-  @Ignore
-  public void shouldNotGetMarcAuthoritySourceRecordById(TestContext context) {
+  public void shouldNotGetMarcAuthoritySourceRecordById(TestContext context) throws InterruptedException {
     notGetMarcSourceRecordById(context, TestMocks.getMarcAuthorityRecord());
+    TimeUnit.SECONDS.sleep(10);
   }
 
   @Test
@@ -554,21 +554,23 @@ public class RecordServiceTest extends AbstractLBServiceTest {
   }
 
   @Test
-  @Ignore
-  public void shouldUpdateParsedMarcBibRecordsAndGetOnlyActualRecord(TestContext context) {
+  public void shouldUpdateParsedMarcBibRecordsAndGetOnlyActualRecord(TestContext context) throws InterruptedException {
     updateParsedMarcRecordsAndGetOnlyActualRecord(context, TestMocks.getMarcBibRecord());
+    TimeUnit.SECONDS.sleep(10);
   }
 
   @Test
-  @Ignore
-  public void shouldUpdateParsedMarcAuthorityRecordsAndGetOnlyActualRecord(TestContext context) {
+  public void shouldUpdateParsedMarcAuthorityRecordsAndGetOnlyActualRecord(TestContext context)
+    throws InterruptedException {
     updateParsedMarcRecordsAndGetOnlyActualRecord(context, TestMocks.getMarcAuthorityRecord());
+    TimeUnit.SECONDS.sleep(10);
   }
 
   @Test
-  @Ignore
-  public void shouldUpdateParsedMarcHoldingsRecordsAndGetOnlyActualRecord(TestContext context) {
+  public void shouldUpdateParsedMarcHoldingsRecordsAndGetOnlyActualRecord(TestContext context)
+    throws InterruptedException {
     updateParsedMarcRecordsAndGetOnlyActualRecord(context, TestMocks.getMarcHoldingsRecord());
+    TimeUnit.SECONDS.sleep(10);
   }
 
   @Test
