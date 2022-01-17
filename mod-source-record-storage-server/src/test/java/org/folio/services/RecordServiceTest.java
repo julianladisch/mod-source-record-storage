@@ -431,8 +431,8 @@ public class RecordServiceTest extends AbstractLBServiceTest {
 
   @Test
   public void shouldStreamEdifactSourceRecords(TestContext context) throws InterruptedException {
-    TimeUnit.SECONDS.sleep(5);
     streamMarcSourceRecords(context, RecordType.EDIFACT, Record.RecordType.EDIFACT);
+    TimeUnit.SECONDS.sleep(5);
   }
 
   @Test
@@ -529,8 +529,8 @@ public class RecordServiceTest extends AbstractLBServiceTest {
 
   @Test
   public void shouldNotGetMarcAuthoritySourceRecordById(TestContext context) throws InterruptedException {
-    TimeUnit.SECONDS.sleep(5);
     notGetMarcSourceRecordById(context, TestMocks.getMarcAuthorityRecord());
+    TimeUnit.SECONDS.sleep(5);
   }
 
   @Test
@@ -555,22 +555,22 @@ public class RecordServiceTest extends AbstractLBServiceTest {
 
   @Test
   public void shouldUpdateParsedMarcBibRecordsAndGetOnlyActualRecord(TestContext context) throws InterruptedException {
-    TimeUnit.SECONDS.sleep(5);
     updateParsedMarcRecordsAndGetOnlyActualRecord(context, TestMocks.getMarcBibRecord());
+    TimeUnit.SECONDS.sleep(5);
   }
 
   @Test
   public void shouldUpdateParsedMarcAuthorityRecordsAndGetOnlyActualRecord(TestContext context)
     throws InterruptedException {
-    TimeUnit.SECONDS.sleep(5);
     updateParsedMarcRecordsAndGetOnlyActualRecord(context, TestMocks.getMarcAuthorityRecord());
+    TimeUnit.SECONDS.sleep(5);
   }
 
   @Test
   public void shouldUpdateParsedMarcHoldingsRecordsAndGetOnlyActualRecord(TestContext context)
     throws InterruptedException {
-    TimeUnit.SECONDS.sleep(5);
     updateParsedMarcRecordsAndGetOnlyActualRecord(context, TestMocks.getMarcHoldingsRecord());
+    TimeUnit.SECONDS.sleep(5);
   }
 
   @Test
