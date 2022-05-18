@@ -25,6 +25,7 @@ public final class EventHandlingUtil {
   private static final Logger LOGGER = LogManager.getLogger();
   private static final String RECORD_ID_HEADER = "recordId";
   private static final String CHUNK_ID_HEADER = "chunkId";
+  private static final String USER_ID_HEADER = "userId";
 
 
   private EventHandlingUtil() { }
@@ -47,15 +48,16 @@ public final class EventHandlingUtil {
 
     Promise<Boolean> promise = Promise.promise();
 
-    String recordId = extractRecordId(kafkaHeaders);
-    String chunkId = extractChunkId(kafkaHeaders);
+    String recordId = extractHeader(kafkaHeaders, RECORD_ID_HEADER);
+    String chunkId = extractHeader(kafkaHeaders, CHUNK_ID_HEADER);
+    String userId = extractHeader(kafkaHeaders, USER_ID_HEADER);
     String producerName = eventType + "_Producer";
     var producer = createProducer(eventType, kafkaConfig);
 
     producer.write(record, war -> {
       producer.end(ear -> producer.close());
       if (war.succeeded()) {
-        LOGGER.info("Event with type {} and recordId {}  with chunkId: {} was sent to kafka", eventType, recordId, chunkId);
+        LOGGER.info("Event with type {} and recordId {} and userId {}  with chunkId: {} was sent to kafka", eventType, recordId, userId, chunkId);
         promise.complete(true);
       } else {
         Throwable cause = war.cause();
@@ -100,17 +102,9 @@ public final class EventHandlingUtil {
     return KafkaProducer.createShared(Vertx.currentContext().owner(), producerName, kafkaConfig.getProducerProps());
   }
 
-  private static String extractRecordId(List<KafkaHeader> kafkaHeaders) {
+  private static String extractHeader(List<KafkaHeader> kafkaHeaders, String key) {
     return kafkaHeaders.stream()
-      .filter(header -> header.key().equals(RECORD_ID_HEADER))
-      .findFirst()
-      .map(header -> header.value().toString())
-      .orElse(null);
-  }
-
-  private static String extractChunkId(List<KafkaHeader> kafkaHeaders) {
-    return kafkaHeaders.stream()
-      .filter(header -> header.key().equals("chunkId"))
+      .filter(header -> header.key().equals(key))
       .findFirst()
       .map(header -> header.value().toString())
       .orElse(null);
