@@ -23,6 +23,8 @@ import io.vertx.core.Future;
 import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.RowSet;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.OrderField;
@@ -47,6 +49,7 @@ import org.folio.rest.jooq.tables.records.RecordsLbRecord;
 public final class RecordDaoUtil {
 
   public static final String RECORD_NOT_FOUND_TEMPLATE = "Record with id '%s' was not found";
+  private static final Logger LOG = LogManager.getLogger();
 
   private static final String COMMA = ",";
   private static final List<String> DELETED_LEADER_RECORD_STATUS = Arrays.asList("d", "s", "x");
@@ -127,6 +130,8 @@ public final class RecordDaoUtil {
    */
   public static Future<Record> save(ReactiveClassicGenericQueryExecutor queryExecutor, Record record) {
     RecordsLbRecord dbRecord = toDatabaseRecord(record);
+    LOG.info("SAVING WITH USER ID:"+ record.getMetadata().getUpdatedByUserId());
+    LOG.info("SAVING WITH USER ID:"+ dbRecord.getUpdatedByUserId());
     return queryExecutor.executeAny(dsl -> dsl.insertInto(RECORDS_LB)
         .set(dbRecord)
         .onDuplicateKeyUpdate()
