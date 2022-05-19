@@ -74,7 +74,7 @@ public abstract class AbstractMarcMatchEventHandler implements EventHandler {
       return future;
     }
     String userId = context.get("userId");
-    LOG.info("MATCH HANDLER RETRIEVE USER ID" + userId);
+    payload.setAdditionalProperty("userId", userId);
     payload.getEventsChain().add(payload.getEventType());
 
     String record = context.get(typeConnection.getMarcType().value());

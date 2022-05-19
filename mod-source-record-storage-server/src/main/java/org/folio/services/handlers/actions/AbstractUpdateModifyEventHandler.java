@@ -76,7 +76,7 @@ public abstract class AbstractUpdateModifyEventHandler implements EventHandler {
       MappingProfile mappingProfile = retrieveMappingProfile(payload);
       String hrId = retrieveHrid(payload, getMarcMappingOption(mappingProfile));
 
-      String userId = payloadContext.get(USER_ID_HEADER);
+      String userId = (String) payload.getAdditionalProperties().get(USER_ID_HEADER);
       LOG.info("UPDATE MODIFY RETRIEVE USER ID" + userId);
       preparePayload(payload);
 
