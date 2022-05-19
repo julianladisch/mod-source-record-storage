@@ -73,6 +73,8 @@ public abstract class AbstractMarcMatchEventHandler implements EventHandler {
       future.completeExceptionally(new EventProcessingException(PAYLOAD_HAS_NO_DATA_MSG));
       return future;
     }
+    String userId = context.get("userId");
+    LOG.info("MATCH HANDLER RETRIEVE USER ID" + userId);
     payload.getEventsChain().add(payload.getEventType());
 
     String record = context.get(typeConnection.getMarcType().value());

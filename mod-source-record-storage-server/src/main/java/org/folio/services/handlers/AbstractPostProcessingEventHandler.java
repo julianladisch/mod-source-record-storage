@@ -87,6 +87,8 @@ public abstract class AbstractPostProcessingEventHandler implements EventHandler
     CompletableFuture<DataImportEventPayload> future = new CompletableFuture<>();
     var eventType = dataImportEventPayload.getEventType();
     var jobExecutionId = dataImportEventPayload.getJobExecutionId();
+    String userId = dataImportEventPayload.getContext().get("userId");
+    LOG.info("POST PRocessing RETRIEVE USER ID" + userId);
     try {
       mappingParamsCache.get(jobExecutionId, retrieveOkapiConnectionParams(dataImportEventPayload, vertx))
         .compose(parametersOptional -> parametersOptional

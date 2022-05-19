@@ -9,6 +9,7 @@ import io.vertx.kafka.client.producer.KafkaHeader;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.folio.DataImportEventPayload;
 import org.folio.dataimport.util.OkapiConnectionParams;
 import org.folio.dbschema.ObjectMapperTool;
@@ -18,6 +19,7 @@ import org.folio.processing.exceptions.EventProcessingException;
 import org.folio.rest.jaxrs.model.Event;
 import org.folio.services.caches.JobProfileSnapshotCache;
 import org.folio.services.util.RestUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static java.lang.String.format;
+
 import static org.folio.DataImportEventTypes.DI_ERROR;
 
 @Component
@@ -62,6 +65,7 @@ public class DataImportKafkaHandler implements AsyncRecordHandler<String, String
       eventPayload.getContext().put(RECORD_ID_HEADER, recordId);
       eventPayload.getContext().put(CHUNK_ID_HEADER, chunkId);
       eventPayload.getContext().put(USER_ID_HEADER, userId);
+      LOGGER.info("KAFKA HANDLER PUT USER ID" + userId + "with EVENT TYPE: "+ event.getEventType());
 
       OkapiConnectionParams params = RestUtil.retrieveOkapiConnectionParams(eventPayload, vertx);
       String jobProfileSnapshotId = eventPayload.getContext().get(PROFILE_SNAPSHOT_ID_KEY);
