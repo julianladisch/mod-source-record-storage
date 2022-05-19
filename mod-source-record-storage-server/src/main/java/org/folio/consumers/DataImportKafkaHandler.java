@@ -64,8 +64,10 @@ public class DataImportKafkaHandler implements AsyncRecordHandler<String, String
         eventPayload.getJobExecutionId(), recordId, chunkId, userId);
       eventPayload.getContext().put(RECORD_ID_HEADER, recordId);
       eventPayload.getContext().put(CHUNK_ID_HEADER, chunkId);
-      eventPayload.getContext().put(USER_ID_HEADER, userId);
-      LOGGER.info("KAFKA HANDLER PUT USER ID" + userId + "with EVENT TYPE: "+ event.getEventType());
+      if (userId != null) {
+        eventPayload.getContext().put(USER_ID_HEADER, userId);
+        LOGGER.info("KAFKA HANDLER PUT USER ID" + userId + "with EVENT TYPE: " + event.getEventType());
+      }
 
       OkapiConnectionParams params = RestUtil.retrieveOkapiConnectionParams(eventPayload, vertx);
       String jobProfileSnapshotId = eventPayload.getContext().get(PROFILE_SNAPSHOT_ID_KEY);

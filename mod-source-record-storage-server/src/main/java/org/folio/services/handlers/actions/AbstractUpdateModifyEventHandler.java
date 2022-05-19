@@ -78,6 +78,7 @@ public abstract class AbstractUpdateModifyEventHandler implements EventHandler {
 
       String userId = (String) payload.getAdditionalProperties().get(USER_ID_HEADER);
       LOG.info("UPDATE MODIFY RETRIEVE USER ID" + userId);
+      LOG.info("UPDATE MODIFY RETRIEVE USER ID FROM CONTEXT" + payloadContext.get(USER_ID_HEADER));
       preparePayload(payload);
 
       mappingParametersCache.get(payload.getJobExecutionId(), RestUtil.retrieveOkapiConnectionParams(payload, vertx))
