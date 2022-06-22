@@ -256,9 +256,13 @@ public class InstancePostProcessingEventHandlerTest extends AbstractPostProcessi
       createDataImportEventPayload(payloadContext, DI_INVENTORY_INSTANCE_UPDATED_READY_FOR_POST_PROCESSING);
 
     Future<DataImportEventPayload> future = recordDao.saveRecord(existingRecord, TENANT_ID)
+      .onFailure(e -> System.err.println("error save rec: " + e))
       .compose(v -> Future.fromCompletionStage(handler.handle(dataImportEventPayload)));
 
     future.onComplete(ar -> {
+      if (ar.failed()) {
+        System.err.println("error: " + ar);
+      }
       context.assertTrue(ar.succeeded());
 
       recordDao.getRecordById(existingRecord.getId(), TENANT_ID).onComplete(recordAr -> {
