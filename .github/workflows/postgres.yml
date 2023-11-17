@@ -21,7 +21,7 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
         cache: maven
-    - run: find . \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s/postgres:13-alpine/$TESTCONTAINERS_POSTGRES_IMAGE/g"
+    - run: find . \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s/postgres:12-alpine/$TESTCONTAINERS_POSTGRES_IMAGE/g"
       env:
         TESTCONTAINERS_POSTGRES_IMAGE: ${{ matrix.postgres }}
     - run: mvn --batch-mode verify
