@@ -209,6 +209,8 @@ public abstract class AbstractPostProcessingEventHandler implements EventHandler
       setSuppressFormDiscovery(record, externalEntity.getBoolean(DISCOVERY_SUPPRESS_FIELD, false));
 
       var targetContent = record.getParsedRecord().getContent().toString();
+      System.out.println("qqq: sourceContent: " + sourceContent);
+      System.out.println("qqq: targetContent: " + targetContent);
       var content = reorderMarcRecordFields(sourceContent, targetContent);
       record.getParsedRecord().setContent(content);
       recordPromise.complete(record);
