@@ -94,11 +94,14 @@ public abstract class AbstractPostProcessingEventHandler implements EventHandler
 
   @Override
   public CompletableFuture<DataImportEventPayload> handle(DataImportEventPayload dataImportEventPayload) {
-    CompletableFuture<DataImportEventPayload> future = new CompletableFuture<>();
+    return handle0(dataImportEventPayload).toCompletionStage().toCompletableFuture();
+  }
+
+  public Future<DataImportEventPayload> handle0(DataImportEventPayload dataImportEventPayload) {
     var eventType = dataImportEventPayload.getEventType();
     var jobExecutionId = dataImportEventPayload.getJobExecutionId();
     try {
-      mappingParamsCache.get(jobExecutionId, retrieveOkapiConnectionParams(dataImportEventPayload, vertx))
+      return mappingParamsCache.get(jobExecutionId, retrieveOkapiConnectionParams(dataImportEventPayload, vertx))
         .compose(parametersOptional -> parametersOptional
           .map(mappingParams -> prepareRecord(dataImportEventPayload, mappingParams))
           .orElse(Future.failedFuture(format(MAPPING_PARAMS_NOT_FOUND_MSG, jobExecutionId))))
@@ -108,21 +111,19 @@ public abstract class AbstractPostProcessingEventHandler implements EventHandler
           }
           return saveRecord(record, dataImportEventPayload.getTenant());
         })
-        .onSuccess(record -> {
+        .map(record -> {
           sendReplyEvent(dataImportEventPayload, record);
           sendAdditionalEvent(dataImportEventPayload, record);
-          future.complete(dataImportEventPayload);
+          return dataImportEventPayload;
         })
         .onFailure(throwable -> {
           LOG.warn(FAIL_MSG, eventType, throwable);
           dataImportEventPayload.setEventType(getNextEventType(dataImportEventPayload));
-          future.completeExceptionally(throwable);
         });
     } catch (Exception e) {
       LOG.warn(FAIL_MSG, eventType, e);
-      future.completeExceptionally(e);
+      return Future.failedFuture(e);
     }
-    return future;
   }
 
   @Override

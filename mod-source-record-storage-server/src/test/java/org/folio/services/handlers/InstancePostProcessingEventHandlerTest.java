@@ -472,7 +472,7 @@ public class InstancePostProcessingEventHandlerTest extends AbstractPostProcessi
       createDataImportEventPayload(payloadContext, DI_INVENTORY_INSTANCE_UPDATED_READY_FOR_POST_PROCESSING);
 
     Future<DataImportEventPayload> future = recordDao.saveRecord(existingRecord, TENANT_ID)
-      .compose(v -> Future.fromCompletionStage(handler.handle(dataImportEventPayload)));
+      .compose(v -> handler.handle0(dataImportEventPayload));
 
     future.onComplete(ar -> {
       context.assertTrue(ar.succeeded());
