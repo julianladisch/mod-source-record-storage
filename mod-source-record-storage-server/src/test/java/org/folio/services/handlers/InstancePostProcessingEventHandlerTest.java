@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static org.folio.DataImportEventTypes.DI_SRS_MARC_BIB_RECORD_CREATED;
@@ -442,7 +443,6 @@ public class InstancePostProcessingEventHandlerTest extends AbstractPostProcessi
 
   @Test
   public void checkGeneration035FiledAfterUpdateMarcBib(TestContext context) throws IOException {
-    Async async = context.async();
     Record existingRecord = TestMocks.getRecord(0);
     existingRecord.setSnapshotId(snapshotId1);
 
@@ -470,29 +470,25 @@ public class InstancePostProcessingEventHandlerTest extends AbstractPostProcessi
 
     DataImportEventPayload dataImportEventPayload =
       createDataImportEventPayload(payloadContext, DI_INVENTORY_INSTANCE_UPDATED_READY_FOR_POST_PROCESSING);
+    AtomicReference<DataImportEventPayload> handle0result = new AtomicReference<>();
 
-    Future<DataImportEventPayload> future = recordDao.saveRecord(existingRecord, TENANT_ID)
-      .compose(v -> handler.handle0(dataImportEventPayload));
+    recordDao.saveRecord(existingRecord, TENANT_ID)
+      .compose(v -> handler.handle0(dataImportEventPayload))
+      .onSuccess(handle0result::set)
+      .compose(v -> recordDao.getRecordById(existingRecord.getId(), TENANT_ID))
+      .compose(v -> recordDao.getRecordById(existingRecord.getId(), TENANT_ID))
+      .onComplete(context.asyncAssertSuccess(result -> {
+        context.assertTrue(result.isPresent());
 
-    future.onComplete(ar -> {
-      context.assertTrue(ar.succeeded());
-
-      recordDao.getRecordById(existingRecord.getId(), TENANT_ID).onComplete(recordAr -> {
-        context.assertTrue(recordAr.succeeded());
-        context.assertTrue(recordAr.result().isPresent());
-
-        Record existingRec = recordAr.result().get();
+        Record existingRec = result.get();
         context.assertEquals(Record.State.OLD, existingRec.getState());
 
-        Record savedIncomingRecord = Json.decodeValue(ar.result().getContext().get(MARC_BIBLIOGRAPHIC.value()), Record.class);
+        Record savedIncomingRecord = Json.decodeValue(handle0result.get().getContext().get(MARC_BIBLIOGRAPHIC.value()), Record.class);
         context.assertEquals(Record.State.ACTUAL, savedIncomingRecord.getState());
         context.assertNotNull(savedIncomingRecord.getGeneration());
         context.assertTrue(existingRec.getGeneration() < savedIncomingRecord.getGeneration());
         context.assertFalse(((String) savedIncomingRecord.getParsedRecord().getContent()).contains("(LTSA)in00000000040"));
-
-        async.complete();
-      });
-    });
+      }));
   }
 
   @Test
