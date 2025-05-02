@@ -22,5 +22,6 @@ jobs:
           cache: maven
       - run: mvn -B install > >( tee out )
         continue-on-error: true
-      - run: grep "^[INFO] Tests run:" out
+      - run: grep "^\[INFO\] Tests run:" out
+        continue-on-error: true
       - run: tail -100 out
